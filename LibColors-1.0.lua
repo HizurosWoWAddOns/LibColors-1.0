@@ -28,8 +28,8 @@ end
 
 lib.colorset = setmetatable({},{
 	__index=function(t,k)
-		if k:match("%x") then
-			return k
+		if k:find("^%x+$") then
+			return k;
 		end
 		return "ffffffff"; -- fallback color
 	end,
