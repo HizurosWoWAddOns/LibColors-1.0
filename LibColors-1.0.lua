@@ -58,8 +58,13 @@ lib.colorset = setmetatable({},{
 })
 
 lib.color = function(reqColor, str)
-	local color
+	local str,color = tostring(str);
 	assert(type(reqColor)=="string" or type(reqColor)=="table","Usage: lib.color(<string|table>[, <string>])")
+
+	-- empty string don't need color
+	if str=="" then
+		return "";
+	end
 
 	-- convert table to string
 	if type(reqColor)=="table" then
