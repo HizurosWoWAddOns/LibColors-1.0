@@ -78,6 +78,10 @@ lib.color = function(reqColor, str)
 	-- get color code from lib.colorset
 	color = lib.colorset[reqColor:lower()]
 
+	if not color:find("^%x+$") then
+		color = lib.colorset.white;
+	end
+
 	 -- return color as color table
 	if str=="colortable" then
 		return lib.hexCode2ColorTable(color)
