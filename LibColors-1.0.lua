@@ -58,11 +58,11 @@ lib.colorset = setmetatable({},{
 })
 
 lib.color = function(reqColor, str)
-	local str,color = tostring(str);
+	local Str,color = tostring(str);
 	assert(type(reqColor)=="string" or type(reqColor)=="table","Usage: lib.color(<string|table>[, <string>])")
 
 	-- empty string don't need color
-	if str=="" then
+	if Str=="" then
 		return "";
 	end
 
@@ -88,7 +88,7 @@ lib.color = function(reqColor, str)
 	end
 
 	-- return string with color or color code
-	return (str==nil and color) or ("|c%s%s|r"):format(color, str)
+	return (str==nil and color) or ("|c%s%s|r"):format(color, Str)
 end
 
 lib.getNames = function(pattern)
