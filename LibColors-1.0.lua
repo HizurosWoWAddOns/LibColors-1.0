@@ -121,10 +121,14 @@ do --[[ basic set of colors ]]
 	};
 
 	-- add class names with english and localized names
-	for n, c in pairs(_G.CUSTOM_CLASS_COLORS or _G.RAID_CLASS_COLORS) do
+	for n, c in pairs(CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS) do
 		tmp[n:lower()] = c.colorStr;
-		tmp[_G.LOCALIZED_CLASS_NAMES_MALE[n]:lower()] = c.colorStr;
-		tmp[_G.LOCALIZED_CLASS_NAMES_FEMALE[n]:lower()] = c.colorStr;
+		if LOCALIZED_CLASS_NAMES_MALE[n] then
+			tmp[LOCALIZED_CLASS_NAMES_MALE[n]:lower()] = c.colorStr;
+		end
+		if LOCALIZED_CLASS_NAMES_FEMALE[n] then
+			tmp[LOCALIZED_CLASS_NAMES_FEMALE[n]:lower()] = c.colorStr;
+		end
 	end
 
 	-- add item quality colors [currently from -1 to 7]
