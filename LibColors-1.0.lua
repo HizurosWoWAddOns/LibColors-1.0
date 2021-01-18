@@ -1,7 +1,7 @@
 
-local MAJOR, MINOR = "LibColors-1.0", 107
+local MAJOR, MINOR = "LibColors-1.0", 108
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
-local _G,string,match,tonumber,rawset,type = _G,string,match,tonumber,rawset,type
+local _G,string,tonumber,rawset,type = _G,string,tonumber,rawset,type
 local hex = "%02x";
 
 if not lib then return end
