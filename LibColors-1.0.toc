@@ -1,6 +1,6 @@
-## Interface: 90200
-## Interface-BCC: 20503
-## Interface-Classic: 11402
+## Interface: 90205
+## Interface-BCC: 20504
+## Interface-Classic: 11403
 ## Title: Lib: LibColors-1.0
 ## Notes: A library to easy coloring strings by hex codes, color tables, class names, color names and more.
 ## Author: Hizuro
