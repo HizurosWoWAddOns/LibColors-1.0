@@ -139,8 +139,15 @@ do --[[ basic set of colors ]]
 		end
 	end
 
+	-- more colors defined in game client
+	for _,name in ipairs({"battlenet"})do
+		local font_color = _G[name:upper().."_FONT_COLOR"];
+		if font_color then
+			tmp[name] = font_color:GenerateHexColor();
+		end
+	end
+
 	lib.colorset(tmp)
 end
 
 --[[ space for more colors later... ]]
-
