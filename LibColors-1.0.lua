@@ -6,6 +6,11 @@ local hex = "%02x";
 
 if not lib then return end
 
+---@class LibColors-1.0
+local lib = lib or {};
+
+---@param num number
+---@return string hex_value
 lib.num2hex = function(num)
 	return hex:format( (tonumber(num) or 0)*255 );
 end
@@ -15,15 +20,12 @@ lib.colorTable2HexCode = function(cT)
 	return _(cT[4] or cT["a"] or 1).._(cT[1] or cT["r"] or 1).._(cT[2] or cT["g"] or 1).._(cT[3] or cT["b"] or 1);
 end
 
+local function hex2num(str,start,stop)
+	return string.format("%d","0x"..string.sub(str,start,stop));
+end
+
 lib.hexCode2ColorTable = function(colorStr)
-	local codes = {string.sub(colorStr,3,4), string.sub(colorStr,5,6), string.sub(colorStr,7,8), string.sub(colorStr,1,2)};
-	for i,v in pairs(codes) do
-		v = string.format("%d","0x"..v);
-		if v~=0 then
-			codes[i] = ((100/255) * v) / 100;
-		end
-	end
-	return codes;
+	return {hex2num(colorStr,3,4), hex2num(colorStr,5,6), hex2num(colorStr,7,8), hex2num(colorStr,1,2)};
 end
 
 lib.colorset = setmetatable({},{
@@ -57,6 +59,9 @@ lib.colorset = setmetatable({},{
 	end
 })
 
+---@paran reqColor string color word or hex value
+---@param str string|nil (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
+---@return string|table
 lib.color = function(reqColor, str)
 	local Str,color = tostring(str);
 	assert(type(reqColor)=="string" or type(reqColor)=="table","Usage: lib.color(<string|table>[, <string>])")
