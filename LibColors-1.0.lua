@@ -28,6 +28,57 @@ lib.hexCode2ColorTable = function(colorStr)
 	return {hex2num(colorStr,3,4), hex2num(colorStr,5,6), hex2num(colorStr,7,8), hex2num(colorStr,1,2)};
 end
 
+---@param fadeFraction number Percentage between all colors
+---@param rgbColor1 table|string list of colors as hex code (string) or color tables; the first color defines the return type.
+---@param rgbColor2 table|string list of colors as hex code (string) or color tables; the first color defines the return type.
+---@param rgbColor3 [table|string] (optional) list of colors as hex code (string) or color tables; the first color defines the return type.
+lib.fadeColor = function(fadeFraction, rgbColor1, rgbColor2, rgbColor3)
+	local colorA = rgbColor1;
+	local colorB = rgbColor2;
+	local fade = fadeFraction;
+	local gradient = {0,0,0,255};
+
+	-- Do we have 3 colors for the gradient? Need to adjust the params.
+	if rgbColor3 then
+		fade = fade * 2;
+
+		-- Find which interval to use and adjust the fade percentage
+		if fade >= 1 then
+			fade = fade-1;
+			colorA = rgbColor2;
+			colorB = rgbColor3;
+		end
+	end
+
+	-- get color code from colorset list and/or convert hex to numeric color table
+	local cType=type(colorA);
+	if cType=="string" then
+		colorA = lib.colorset[string.lower(colorA)] or colorA;
+		colorA = lib.hexCode2ColorTable(colorA)
+	end
+
+	if type(colorB)=="string" then
+		colorB = lib.colorset[string.lower(colorB)] or colorB;
+		colorB = lib.hexCode2ColorTable(colorB)
+	end
+
+	-- calculate color
+	for i=1, 4 do
+		gradient[i] = floor(colorA[i] + ((colorB[i] - colorA[i]) * fade ));
+		if gradient[i]<0 then
+			gradient[i]=0;
+		end
+		gradient[i] = gradient[i]/255;
+	end
+
+	if cType=="string" then
+		-- return color table as hex code
+		return lib.colorTable2HexCode(gradient)
+	end
+	-- return color table
+	return gradient;
+end
+
 lib.colorset = setmetatable({},{
 	__index=function(t,k)
 		if k:find("^%x+$") then
