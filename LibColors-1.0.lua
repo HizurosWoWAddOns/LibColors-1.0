@@ -15,15 +15,22 @@ lib.num2hex = function(num)
 	return hex:format( (tonumber(num) or 0)*255 );
 end
 
-lib.colorTable2HexCode = function(cT)
-	local _ = lib.num2hex;
-	return _(cT[4] or cT["a"] or 1).._(cT[1] or cT["r"] or 1).._(cT[2] or cT["g"] or 1).._(cT[3] or cT["b"] or 1);
+---@param colorTable table table with entries for the colors red, green and blue.
+---@return string
+lib.colorTable2HexCode = function(colorTable)
+	local n2h = lib.num2hex;
+	return n2h(colorTable[4] or colorTable["a"] or 1)
+		.. n2h(colorTable[1] or colorTable["r"] or 1)
+		.. n2h(colorTable[2] or colorTable["g"] or 1)
+		.. n2h(colorTable[3] or colorTable["b"] or 1);
 end
 
 local function hex2num(str,start,stop)
-	return string.format("%d","0x"..string.sub(str,start,stop));
+	return tonumber(string.sub(str,start,stop),16) or 255;
 end
 
+---@param colorStr string A hexadecimal color code with a character length of 6 or 8 signs. RRGGBB or AARRGGBB.
+---@return table
 lib.hexCode2ColorTable = function(colorStr)
 	return {hex2num(colorStr,3,4), hex2num(colorStr,5,6), hex2num(colorStr,7,8), hex2num(colorStr,1,2)};
 end
@@ -110,8 +117,8 @@ lib.colorset = setmetatable({},{
 	end
 })
 
----@paran reqColor string color word or hex value
----@param str string|nil (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
+---@param reqColor string|table color word or hex value
+---@param str [string|nil] (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
 ---@return string|table
 lib.color = function(reqColor, str)
 	local Str,color = tostring(str);
@@ -124,15 +131,19 @@ lib.color = function(reqColor, str)
 
 	-- convert table to string
 	if type(reqColor)=="table" then
-		reqColor = lib.colorTable2HexCode(reqColor)
+		color = lib.colorTable2HexCode(reqColor)
 
-	-- or replace special color keywords
+	-- replace special color keywords
 	elseif reqColor=="playerclass" then
-		reqColor = UnitName("player")
+		reqColor = UnitClass("player")
+	elseif reqColor:find("^unitclass:.*$") then
+		reqColor = UnitClass((reqColor:match("unitclass:(.*)")))
 	end
 
 	-- get color code from lib.colorset
-	color = lib.colorset[reqColor:lower()]
+	if not color then
+		color = lib.colorset[string.lower(tostring(reqColor))]
+	end
 
 	if not color:find("^%x+$") then
 		color = lib.colorset.white;
@@ -147,6 +158,7 @@ lib.color = function(reqColor, str)
 	return (str==nil and color) or ("|c%s%s|r"):format(color, Str)
 end
 
+---@param pattern string
 lib.getNames = function(pattern)
 	local names,_ = {}
 	for name,_ in pairs(lib.colorset) do
