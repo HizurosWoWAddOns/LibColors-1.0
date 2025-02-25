@@ -12,12 +12,12 @@
 ## Category-esES: Bibliotecas
 ## Category-esMX: Bibliotecas
 ## Category-frFR: Bibliothèques
-## Category-itIT:
-## Category-koKR:
+## Category-itIT: Biblioteche
+## Category-koKR: 도서관
 ## Category-ptBR: Bibliotecas
 ## Category-ruRU: Библиотеки
 ## Category-zhCN: 库
-## Category-zhTW:
+## Category-zhTW: 库
 
 ## OptionalDeps: LibStub, CallbackHandler-1.0
 
