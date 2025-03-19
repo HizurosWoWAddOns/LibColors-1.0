@@ -170,7 +170,7 @@ end
 
 ---@param pattern string
 lib.getNames = function(pattern)
-	local names,_ = {}
+	local names,_ = {},nil;
 	for name,_ in pairs(lib.colorset) do
 		if pattern==nil or (pattern~=nil and name:match(pattern)) then
 			tinsert(names,name)
@@ -199,7 +199,7 @@ do --[[ basic set of colors ]]
 	};
 
 	local classColors = {}
-	for n, c in pairs(CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS) do
+	for n, c in pairs(_G["CUSTOM_CLASS_COLORS"] or _G["RAID_CLASS_COLORS"]) do
 		classColors[n] = c;
 	end
 
@@ -224,7 +224,7 @@ do --[[ basic set of colors ]]
 	end
 
 	-- add item quality colors [currently from -1 to 7]
-	for i,v in pairs(_G.ITEM_QUALITY_COLORS) do
+	for i,v in pairs(_G["ITEM_QUALITY_COLORS"]) do
 		tmp["quality"..i] = v;
 		if (_G["ITEM_QUALITY"..i.."_DESC"]) then
 			tmp[_G["ITEM_QUALITY"..i.."_DESC"]:lower()] = v;
