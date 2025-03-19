@@ -29,10 +29,23 @@ local function hex2num(str,start,stop)
 	return tonumber(string.sub(str,start,stop),16) or 255;
 end
 
+local function wrapText(self,text)
+	return ("|c%s%s|r"):format(self.hex, text)
+end
+
 ---@param colorStr string A hexadecimal color code with a character length of 6 or 8 signs. RRGGBB or AARRGGBB.
 ---@return table
 lib.hexCode2ColorTable = function(colorStr)
-	return {hex2num(colorStr,3,4), hex2num(colorStr,5,6), hex2num(colorStr,7,8), hex2num(colorStr,1,2)};
+	local r,g,b,a = hex2num(colorStr,3,4), hex2num(colorStr,5,6), hex2num(colorStr,7,8), hex2num(colorStr,1,2);
+	if strlen(colorStr)==6 then
+		colorStr = "ff"..colorStr
+	end
+	return {
+		r,g,b,a,
+		r=r,g=g,b=b,a=a,
+		hex=colorStr,
+		wrapText=wrapText
+	};
 end
 
 ---@param gradientFraction number Percentage between all colors
