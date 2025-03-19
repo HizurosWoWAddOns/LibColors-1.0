@@ -101,9 +101,6 @@ end
 
 lib.colorset = setmetatable({},{
 	__index=function(t,k)
-		if k:find("^%x+$") then
-			return k;
-		end
 		return "ffffffff"; -- fallback color
 	end,
 	__call=function(t,a,b)
