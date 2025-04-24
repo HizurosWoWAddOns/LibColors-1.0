@@ -73,12 +73,12 @@ lib.colorGradient = function(gradientFraction, rgbColor1, rgbColor2, rgbColor3)
 	-- get color code from colorset list and/or convert hex to numeric color table
 	local cType=type(colorA);
 	if cType=="string" then
-		colorA = lib.colorset[string.lower(colorA)] or colorA;
+		colorA = rawget(lib.colorset,string.lower(colorA)) or colorA;
 		colorA = lib.hexCode2ColorTable(colorA)
 	end
 
 	if type(colorB)=="string" then
-		colorB = lib.colorset[string.lower(colorB)] or colorB;
+		colorB = rawget(lib.colorset,string.lower(colorB)) or colorB;
 		colorB = lib.hexCode2ColorTable(colorB)
 	end
 
@@ -131,7 +131,7 @@ lib.colorset = setmetatable({},{
 ---@param str [string|nil] (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
 ---@return string|table
 lib.color = function(reqColor, str)
-	local Str,color = tostring(str);
+	local Str,color = tostring(str):trim();
 	assert(type(reqColor)=="string" or type(reqColor)=="table","Usage: lib.color(<string|table>[, <string>])")
 
 	-- empty string don't need color
@@ -143,6 +143,10 @@ lib.color = function(reqColor, str)
 	if type(reqColor)=="table" then
 		color = lib.colorTable2HexCode(reqColor)
 
+	-- reqColor is a color hex code
+	elseif reqColor:find("^%x+$") then
+		color = reqColor;
+
 	-- replace special color keywords
 	elseif reqColor=="playerclass" then
 		reqColor = UnitClass("player")
@@ -152,10 +156,11 @@ lib.color = function(reqColor, str)
 
 	-- get color code from lib.colorset
 	if not color then
-		color = lib.colorset[string.lower(tostring(reqColor))]
+		color = rawget(lib.colorset,string.lower(tostring(reqColor)))
 	end
 
-	if not color:find("^%x+$") then
+	-- last fallback
+	if not (color and color:find("^%x+$")) then
 		color = lib.colorset.white;
 	end
 
