@@ -128,7 +128,7 @@ lib.colorset = setmetatable({},{
 })
 
 ---@param reqColor string|table color word or hex value
----@param str [string|nil] (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
+---@param str? string (optional) string that wrapped in color code, the word "table" to get a color table or nil to get the color code like ffd000
 ---@return string|table
 lib.color = function(reqColor, str)
 	local Str,color = tostring(str):trim();
