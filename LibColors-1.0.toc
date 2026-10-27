@@ -1,4 +1,4 @@
-## Interface: 120100, 50504, 38002, 20506, 11509
+## Interface: 120105, 50504, 38002, 20506, 11509
 ## Title: Lib: LibColors-1.0
 ## Notes: A library to easy coloring strings by hex codes, color tables, class names, color names and more.
 ## Author: Hizuro
